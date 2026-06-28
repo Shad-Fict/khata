@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" contenat="width=device-width, initial-scale=1.0">
+    <title>Daily Hisab Pro Ultimate 💎</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        primary: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
+                        accent: { 400:'#a78bfa',500:'#8b5cf6',600:'#7c3aed' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-sans bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+<!-- Login Page -->
+<div id="loginPage" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-indigo-900 via-purple-900 to-violet-900 hidden">
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay:1s"></div>
+    </div>
+    <div class="relative w-full max-w-md">
+        <div class="glass p-8 rounded-2xl shadow-2xl border border-white/10">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/30">
+                    <i data-lucide="book-open" class="w-8 h-8 text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Daily Hisab Pro</h1>
+                <p class="text-gray-400 mt-1">Enterprise Digital Khata Book</p>
+            </div>
+            <div id="loginForm">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                        <input type="email" id="loginEmail" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" placeholder="Enter your email" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                        <input type="password" id="loginPassword" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" placeholder="Enter your password" required>
+                    </div>
+                    <button onclick="handleLogin()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 transform hover:scale-[1.02]">Sign In</button>
+                </div>
+                <p class="text-center text-gray-400 mt-4 text-sm">Don't have an account? <button onclick="showRegister()" class="text-indigo-400 hover:text-indigo-300 font-medium">Register</button></p>
+            </div>
+            <div id="registerForm" class="hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Shop Name</label>
+                        <input type="text" id="regShopName" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Your shop name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                        <input type="text" id="regName" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Your full name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                        <input type="email" id="regEmail" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Enter email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                        <input type="password" id="regPassword" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Create password">
+                    </div>
+                    <button onclick="handleRegister()" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-semibold shadow-lg shadow-indigo-500/30 transition-all duration-300 transform hover:scale-[1.02]">Create Account</button>
+                </div>
+                <p class="text-center text-gray-400 mt-4 text-sm">Already have an account? <button onclick="showLogin()" class="text-indigo-400 hover:text-indigo-300 font-medium">Sign In</button></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main App -->
+<div id="mainApp" class="hidden min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-r border-white/10 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-white text-lg">Daily Hisab</h2>
+                    <p class="text-xs text-gray-400">Pro Ultimate</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
+            <button onclick="navigateTo('dashboard')" data-nav="dashboard" class="nav-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i><span class="font-medium">Dashboard</span>
+            </button>
+            <button onclick="navigateTo('customers')" data-nav="customers" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="users" class="w-5 h-5"></i><span class="font-medium">Customers</span>
+            </button>
+            <button onclick="navigateTo('products')" data-nav="products" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="package" class="w-5 h-5"></i><span class="font-medium">Products</span>
+            </button>
+            <button onclick="navigateTo('newPurchase')" data-nav="newPurchase" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i><span class="font-medium">New Purchase</span>
+            </button>
+            <button onclick="navigateTo('newPayment')" data-nav="newPayment" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="banknote" class="w-5 h-5"></i><span class="font-medium">Record Payment</span>
+            </button>
+            <button onclick="navigateTo('transactions')" data-nav="transactions" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="receipt" class="w-5 h-5"></i><span class="font-medium">Transactions</span>
+            </button>
+            <button onclick="navigateTo('reports')" data-nav="reports" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="bar-chart-3" class="w-5 h-5"></i><span class="font-medium">Reports</span>
+            </button>
+            <button onclick="navigateTo('settings')" data-nav="settings" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-200 group">
+                <i data-lucide="settings" class="w-5 h-5"></i><span class="font-medium">Settings</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 px-3 py-2">
+                <div class="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md" id="userAvatar">U</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate" id="userName">User</p>
+                    <p class="text-xs text-gray-400 truncate" id="userEmail">user@email.com</p>
+                </div>
+                <button onclick="handleLogout()" class="p-2 text-gray-400 hover:text-red-400 transition-colors" title="Logout">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-h-screen overflow-auto">
+        <!-- Top Bar -->
+        <header class="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-slate-800">
+            <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                    <div class="relative">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                        <input type="text" id="globalSearch" placeholder="Search customers, products, transactions..." class="pl-10 pr-4 py-2.5 bg-gray-100 dark:bg-slate-800 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm w-48 md:w-80 transition-all duration-300" oninput="handleGlobalSearch(this.value)">
+                        <div id="searchResults" class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 max-h-80 overflow-y-auto hidden z-50"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs text-gray-500 dark:text-gray-400" id="currentTime"></p>
+                        <p class="text-xs font-medium text-gray-700 dark:text-gray-300" id="currentDate"></p>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition" title="Toggle Theme">
+                        <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
+                    </button>
+                    <div class="relative">
+                        <button onclick="toggleNotifications()" class="p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition relative">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <span id="notifBadge" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold hidden">0</span>
+                        </button>
+                        <div id="notifPanel" class="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 hidden z-50">
+                            <div class="p-4 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center">
+                                <h3 class="font-semibold">Notifications</h3>
+                                <button onclick="clearNotifications()" class="text-xs text-indigo-500 hover:text-indigo-400">Clear all</button>
+                            </div>
+                            <div id="notifList" class="max-h-60 overflow-y-auto p-2 space-y-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="p-4 lg:p-8">
+            <!-- Dashboard -->
+            <div id="page-dashboard" class="page hidden">
+                <div class="mb-8">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Dashboard</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Welcome back! Here's your business overview.</p>
+                </div>
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+                    <div class="glass-card bg-gradient-to-br from-indigo-500 to-indigo-600 dark:from-indigo-600 dark:to-indigo-700 text-white p-5 lg:p-6 rounded-2xl shadow-xl shadow-indigo-500/20 hover:scale-[1.02] transition-transform duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i data-lucide="users" class="w-5 h-5"></i></div>
+                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full" id="kpiCustomersChange">+0%</span>
+                        </div>
+                        <p class="text-sm opacity-80">Total Customers</p>
+                        <p class="text-2xl lg:text-3xl font-bold mt-1" id="kpiCustomers">0</p>
+                    </div>
+                    <div class="glass-card bg-gradient-to-br from-emerald-500 to-emerald-600 dark:from-emerald-600 dark:to-emerald-700 text-white p-5 lg:p-6 rounded-2xl shadow-xl shadow-emerald-500/20 hover:scale-[1.02] transition-transform duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
+                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full" id="kpiSalesChange">+0%</span>
+                        </div>
+                        <p class="text-sm opacity-80">Today's Sales</p>
+                        <p class="text-2xl lg:text-3xl font-bold mt-1" id="kpiTodaySales">₹0</p>
+                    </div>
+                    <div class="glass-card bg-gradient-to-br from-amber-500 to-orange-500 dark:from-amber-600 dark:to-orange-600 text-white p-5 lg:p-6 rounded-2xl shadow-xl shadow-amber-500/20 hover:scale-[1.02] transition-transform duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full" id="kpiPendingCount">0</span>
+                        </div>
+                        <p class="text-sm opacity-80">Pending Amount</p>
+                        <p class="text-2xl lg:text-3xl font-bold mt-1" id="kpiPending">₹0</p>
+                    </div>
+                    <div class="glass-card bg-gradient-to-br from-rose-500 to-pink-600 dark:from-rose-600 dark:to-pink-700 text-white p-5 lg:p-6 rounded-2xl shadow-xl shadow-rose-500/20 hover:scale-[1.02] transition-transform duration-300">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i data-lucide="package" class="w-5 h-5"></i></div>
+                            <span class="text-xs bg-white/20 px-2 py-1 rounded-full" id="kpiLowStock">0</span>
+                        </div>
+                        <p class="text-sm opacity-80">Total Products</p>
+                        <p class="text-2xl lg:text-3xl font-bold mt-1" id="kpiProducts">0</p>
+                    </div>
+                </div>
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
+                    <div class="glass-card bg-white dark:bg-slate-800/80 p-5 lg:p-6 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <h3 class="font-semibold mb-4">Weekly Sales</h3>
+                        <canvas id="weeklyChart" height="200"></canvas>
+                    </div>
+                    <div class="glass-card bg-white dark:bg-slate-800/80 p-5 lg:p-6 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <h3 class="font-semibold mb-4">Monthly Sales</h3>
+                        <canvas id="monthlyChart" height="200"></canvas>
+                    </div>
+                </div>
+                <!-- Recent Transactions & Top Customers -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+                    <div class="lg:col-span-2 glass-card bg-white dark:bg-slate-800/80 p-5 lg:p-6 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold">Recent Transactions</h3>
+                            <button onclick="navigateTo('transactions')" class="text-sm text-indigo-500 hover:text-indigo-400 font-medium">View All</button>
+                        </div>
+                        <div id="recentTransactions" class="space-y-3"></div>
+                    </div>
+                    <div class="glass-card bg-white dark:bg-slate-800/80 p-5 lg:p-6 rounded-2xl border border-gray-200 dark:border-slate-700">
+                        <h3 class="font-semibold mb-4">Top Customers</h3>
+                        <div id="topCustomers" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers -->
+            <div id="page-customers" class="page hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-2xl lg:text-3xl font-bold">Customers</h1>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">Manage your customer accounts</p>
+                    </div>
+                    <button onclick="openCustomerModal()" class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all duration-300 transform hover:scale-[1.02]">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Customer
+                    </button>
+                </div>
+                <!-- Filter Tabs -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button onclick="filterCustomers('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-sm font-medium bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300">All</button>
+                    <button onclick="filterCustomers('pending')" data-filter="pending" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/50 dark:hover:text-indigo-300 transition">Pending</button>
+                    <button onclick="filterCustomers('settled')" data-filter="settled" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 hover:bg-indigo-100 hover:text-indigo-700 transition">Settled</button>
+                </div>
+                <!-- Customer Cards -->
+                <div id="customersList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- Customer Detail / Ledger -->
+            <div id="page-customerDetail" class="page hidden">
+                <div class="flex items-center gap-3 mb-6">
+                    <button onclick="navigateTo('customers')" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <div class="flex-1">
+                        <h1 class="text-2xl lg:text-3xl font-bold" id="ledgerCustomerName">Customer</h1>
+                        <p class="text-gray-500 dark:text-gray-400" id="ledgerCustomerPhone">Phone</p>
+                    </div>
+                    <button onclick="openStatementModal()" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-medium transition">
+                        <i data-lucide="printer" class="w-4 h-4"></i> <span class="hidden sm:inline">Statement</span>
+                    </button>
+                </div>
+                <!-- Ledger Summary Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 rounded-2xl border border-indigo-200 dark:border-indigo-800">
+                        <p class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Total Purchases</p>
+                        <p class="text-xl font-bold text-indigo-700 dark:text-indigo-300 mt-1" id="ledgerTotalPurchase">₹0</p>
+                    </div>
+                    <div class="bg-emerald-50 dark:bg-emerald-900/30 p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800">
+                        <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Total Paid</p>
+                        <p class="text-xl font-bold text-emerald-700 dark:text-emerald-300 mt-1" id="ledgerTotalPaid">₹0</p>
+                    </div>
+                    <div class="bg-amber-50 dark:bg-amber-900/30 p-4 rounded-2xl border border-amber-200 dark:border-amber-800">
+                        <p class="text-xs text-amber-600 dark:text-amber-400 font-medium">Current Due</p>
+                        <p class="text-xl font-bold text-amber-700 dark:text-amber-300 mt-1" id="ledgerCurrentDue">₹0</p>
+                    </div>
+                    <div class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-2xl border border-purple-200 dark:border-purple-800">
+                        <p class="text-xs text-purple-600 dark:text-purple-400 font-medium">Transactions</p>
+                        <p class="text-xl font-bold text-purple-700 dark:text-purple-300 mt-1" id="ledgerTransCount">0</p>
+                    </div>
+                </div>
+                <!-- Quick Actions -->
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <button onclick="openPurchaseForCustomer()" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium shadow-md transition hover:scale-[1.02]">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> New Purchase
+                    </button>
+                    <button onclick="openPaymentForCustomer()" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium shadow-md transition hover:scale-[1.02]">
+                        <i data-lucide="banknote" class="w-4 h-4"></i> Record Payment
+                    </button>
+                    <button onclick="editCustomer(currentLedgerCustomer)" class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl font-medium transition hover:scale-[1.02]">
+                        <i data-lucide="edit-3" class="w-4 h-4"></i> Edit
+                    </button>
+                </div>
+                <!-- Ledger Table -->
+                <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50 dark:bg-slate-700/50">
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Date</th>
+                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Description</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Debit (Purchase)</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Credit (Paid)</th>
+                                    <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Balance</th>
+                                    <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledgerTableBody" class="divide-y divide-gray-100 dark:divide-slate-700"></tbody>
+                        </table>
+                    </div>
+                    <div id="ledgerEmpty" class="hidden p-12 text-center">
+                        <i data-lucide="book-open" class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4"></i>
+                        <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">No transactions yet</p>
+                        <p class="text-gray-400 dark:text-gray-500 text-sm mt-1">Add a purchase or payment to get started</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div id="page-products" class="page hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-2xl lg:text-3xl font-bold">Products & Inventory</h1>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">Manage your product catalog</p>
+                    </div>
+                    <button onclick="openProductModal()" class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium shadow-lg shadow-indigo-500/30 transition hover:scale-[1.02]">
+                        <i data-lucide="plus" class="w-4 h-4"></i> Add Product
+                    </button>
+                </div>
+                <!-- Low Stock Alerts -->
+                <div id="lowStockAlerts" class="mb-6 hidden">
+                    <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>
+                            <span class="font-semibold text-amber-700 dark:text-amber-400">Low Stock Alerts</span>
+                        </div>
+                        <div id="lowStockList" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+                <div id="productsList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- New Purchase -->
+            <div id="page-newPurchase" class="page hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">New Purchase / Sale</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Record a new transaction</p>
+                </div>
+                <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Customer *</label>
+                            <select id="purchaseCustomer" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                <option value="">Select Customer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Date *</label>
+                            <input type="date" id="purchaseDate" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                    </div>
+                    <!-- Items -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold">Items</h3>
+                            <button onclick="addPurchaseItem()" class="flex items-center gap-1 text-sm text-indigo-500 hover:text-indigo-400 font-medium">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Add Item
+                            </button>
+                        </div>
+                        <div id="purchaseItemsContainer" class="space-y-3">
+                            <div class="purchase-item-row grid grid-cols-12 gap-3 items-end">
+                                <div class="col-span-4">
+                                    <label class="block text-xs font-medium mb-1 text-gray-500">Product</label>
+                                    <input type="text" placeholder="Product name" class="item-name w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-medium mb-1 text-gray-500">Qty</label>
+                                    <input type="number" placeholder="0" class="item-qty w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" oninput="calculatePurchaseTotal()">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-medium mb-1 text-gray-500">Unit</label>
+                                    <select class="item-unit w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                        <option value="kg">Kg</option><option value="pcs">Pcs</option><option value="l">Ltr</option><option value="m">Mtr</option><option value="box">Box</option><option value="pack">Pack</option>
+                                    </select>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-medium mb-1 text-gray-500">Rate (₹)</label>
+                                    <input type="number" placeholder="0" class="item-rate w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" oninput="calculatePurchaseTotal()">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-medium mb-1 text-gray-500">Amount (₹)</label>
+                                    <input type="number" placeholder="0" class="item-amount w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition bg-indigo-50 dark:bg-indigo-900/30" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Totals -->
+                    <div class="bg-gray-50 dark:bg-slate-700/50 rounded-2xl p-5 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
+                            <span class="font-semibold" id="purchaseSubtotal">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center gap-3">
+                            <div class="flex items-center gap-2 flex-1">
+                                <span class="text-gray-600 dark:text-gray-400 text-sm">Discount</span>
+                                <input type="number" id="purchaseDiscount" value="0" class="w-24 px-3 py-1.5 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm text-right focus:outline-none focus:ring-2 focus:ring-indigo-500" oninput="calculatePurchaseTotal()">
+                            </div>
+                            <span class="font-semibold text-rose-500" id="purchaseDiscountAmount">-₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center gap-3">
+                            <div class="flex items-center gap-2 flex-1">
+                                <span class="text-gray-600 dark:text-gray-400 text-sm">Tax %</span>
+                                <input type="number" id="purchaseTax" value="0" class="w-24 px-3 py-1.5 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm text-right focus:outline-none focus:ring-2 focus:ring-indigo-500" oninput="calculatePurchaseTotal()">
+                            </div>
+                            <span class="font-semibold text-amber-500" id="purchaseTaxAmount">+₹0</span>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-slate-600 pt-3 flex justify-between items-center">
+                            <span class="font-bold text-lg">Grand Total</span>
+                            <span class="font-bold text-2xl text-indigo-600 dark:text-indigo-400" id="purchaseGrandTotal">₹0</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 pt-3">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Amount Paid</label>
+                                <input type="number" id="purchasePaid" value="0" class="w-full px-3 py-2.5 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" oninput="calculatePurchaseTotal()">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Balance Due</label>
+                                <input type="text" id="purchaseDue" class="w-full px-3 py-2.5 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-700 text-sm font-bold text-amber-700 dark:text-amber-400" readonly value="₹0">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Notes</label>
+                            <input type="text" id="purchaseNotes" placeholder="Optional notes..." class="w-full px-3 py-2.5 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button onclick="navigateTo('dashboard')" class="px-6 py-2.5 border border-gray-200 dark:border-slate-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition">Cancel</button>
+                        <button onclick="savePurchase()" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl font-medium shadow-lg shadow-indigo-500/30 transition hover:scale-[1.02]">Save Purchase</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Payment -->
+            <div id="page-newPayment" class="page hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Record Payment</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Record a payment received from a customer</p>
+                </div>
+                <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Customer *</label>
+                            <select id="paymentCustomer" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" onchange="updatePaymentBalance()">
+                                <option value="">Select Customer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Date *</label>
+                            <input type="date" id="paymentDate" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                    </div>
+                    <div id="paymentBalanceInfo" class="hidden mb-6 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-amber-700 dark:text-amber-400 font-medium">Current Due Amount:</span>
+                            <span class="text-xl font-bold text-amber-700 dark:text-amber-400" id="paymentCurrentDue">₹0</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Amount *</label>
+                            <input type="number" id="paymentAmount" placeholder="Enter amount" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Payment Method</label>
+                            <select id="paymentMethod" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                                <option value="cash">Cash</option>
+                                <option value="upi">UPI</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="cheque">Cheque</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Reference Number</label>
+                            <input type="text" id="paymentRef" placeholder="Optional reference" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Remarks</label>
+                            <input type="text" id="paymentRemarks" placeholder="Optional remarks" class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button onclick="navigateTo('dashboard')" class="px-6 py-2.5 border border-gray-200 dark:border-slate-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition">Cancel</button>
+                        <button onclick="savePayment()" class="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl font-medium shadow-lg shadow-emerald-500/30 transition hover:scale-[1.02]">Save Payment</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions -->
+            <div id="page-transactions" class="page hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-2xl lg:text-3xl font-bold">Transactions</h1>
+                        <p class="text-gray-500 dark:text-gray-400 mt-1">All purchases and payments</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('newPurchase')" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium text-sm shadow-md transition hover:scale-[1.02]">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Purchase
+                        </button>
+                        <button onclick="navigateTo('newPayment')" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium text-sm shadow-md transition hover:scale-[1.02]">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Payment
+                        </button>
+                    </div>
+                </div>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <button onclick="filterTransactions('all')" data-tfilter="all" class="tfilter-btn active px-4 py-2 rounded-xl text-sm font-medium bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300">All</button>
+                    <button onclick="filterTransactions('purchase')" data-tfilter="purchase" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 transition">Purchases</button>
+                    <button onclick="filterTransactions('payment')" data-tfilter="payment" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 transition">Payments</button>
+                    <button onclick="filterTransactions('today')" data-tfilter="today" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 transition">Today</button>
+                    <button onclick="filterTransactions('thisMonth')" data-tfilter="thisMonth" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-medium bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-gray-400 transition">This Month</button>
+                </div>
+                <div id="transactionsList" class="space-y-3"></div>
+            </div>
+
+            <!-- Reports -->
+            <div id="page-reports" class="page hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Reports</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Business insights and analytics</p>
+                </div>
+                <!-- Report Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+                    <div onclick="showReport('daily')" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800 transition">
+                            <i data-lucide="calendar" class="w-6 h-6 text-indigo-600 dark:text-indigo-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Daily Sales Report</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Today's sales summary</p>
+                    </div>
+                    <div onclick="showReport('monthly')" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-200 dark:group-hover:bg-emerald-800 transition">
+                            <i data-lucide="bar-chart-3" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Monthly Report</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Monthly business overview</p>
+                    </div>
+                    <div onclick="showReport('pending')" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-800 transition">
+                            <i data-lucide="clock" class="w-6 h-6 text-amber-600 dark:text-amber-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Pending Report</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">All pending amounts</p>
+                    </div>
+                    <div onclick="showReport('customer')" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition">
+                            <i data-lucide="users" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Customer Report</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Customer-wise analysis</p>
+                    </div>
+                    <div onclick="showReport('product')" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-rose-100 dark:bg-rose-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-rose-200 dark:group-hover:bg-rose-800 transition">
+                            <i data-lucide="package" class="w-6 h-6 text-rose-600 dark:text-rose-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Product Report</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Product-wise sales</p>
+                    </div>
+                    <div onclick="exportAllData()" class="glass-card bg-white dark:bg-slate-800/80 p-6 rounded-2xl border border-gray-200 dark:border-slate-700 cursor-pointer hover:border-indigo-300 dark:hover:border-indigo-600 transition-all duration-300 hover:scale-[1.02] group">
+                        <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-teal-200 dark:group-hover:bg-teal-800 transition">
+                            <i data-lucide="download" class="w-6 h-6 text-teal-600 dark:text-teal-400"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Export Data</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Download all data as JSON</p>
+                    </div>
+                </div>
+                <!-- Report Content -->
+                <div id="reportContent" class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6 hidden"></div>
+            </div>
+
+            <!-- Settings -->
+            <div id="page-settings" class="page hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-bold">Settings</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Customize your application</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Shop Settings -->
+                    <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                        <h3 class="font-semibold text-lg mb-4 flex items-center gap-2"><i data-lucide="store" class="w-5 h-5 text-indigo-500"></i> Shop Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Shop Name</label>
+                                <input type="text" id="settShopName" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Your Shop Name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Owner Name</label>
+                                <input type="text" id="settOwnerName" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Owner Name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Phone</label>
+                                <input type="text" id="settPhone" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Phone number">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Address</label>
+                                <textarea id="settAddress" rows="2" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="Shop address"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">GST Number</label>
+                                <input type="text" id="settGST" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="GST Number (optional)">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Currency Symbol</label>
+                                <input type="text" id="settCurrency" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" placeholder="₹" maxlength="3">
+                            </div>
+                            <button onclick="saveSettings()" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-medium shadow-md transition hover:scale-[1.02]">Save Settings</button>
+                        </div>
+                    </div>
+                    <!-- Other Settings -->
+                    <div class="space-y-6">
+                        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                            <h3 class="font-semibold text-lg mb-4 flex items-center gap-2"><i data-lucide="palette" class="w-5 h-5 text-purple-500"></i> Appearance</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Theme</label>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <button onclick="setTheme('light')" class="theme-btn px-4 py-3 rounded-xl border-2 text-sm font-medium transition" data-theme="light">
+                                            <i data-lucide="sun" class="w-5 h-5 mx-auto mb-1"></i> Light
+                                        </button>
+                                        <button onclick="setTheme('dark')" class="theme-btn px-4 py-3 rounded-xl border-2 text-sm font-medium transition" data-theme="dark">
+                                            <i data-lucide="moon" class="w-5 h-5 mx-auto mb-1"></i> Dark
+                                        </button>
+                                        <button onclick="setTheme('auto')" class="theme-btn px-4 py-3 rounded-xl border-2 text-sm font-medium transition" data-theme="auto">
+                                            <i data-lucide="monitor" class="w-5 h-5 mx-auto mb-1"></i> Auto
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                            <h3 class="font-semibold text-lg mb-4 flex items-center gap-2"><i data-lucide="database" class="w-5 h-5 text-emerald-500"></i> Data Management</h3>
+                            <div class="space-y-3">
+                                <button onclick="exportAllData()" class="w-full flex items-center gap-2 px-4 py-3 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-xl font-medium hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition">
+                                    <i data-lucide="download" class="w-4 h-4"></i> Export All Data
+                                </button>
+                                <button onclick="document.getElementById('importFile').click()" class="w-full flex items-center gap-2 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-xl font-medium hover:bg-blue-100 dark:hover:bg-blue-900/40 transition">
+                                    <i data-lucide="upload" class="w-4 h-4"></i> Import Data
+                                </button>
+                                <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+                                <button onclick="confirmClearData()" class="w-full flex items-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-xl font-medium hover:bg-red-100 dark:hover:bg-red-900/40 transition">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i> Clear All Data
+                                </button>
+                            </div>
+                        </div>
+                        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
+                            <h3 class="font-semibold text-lg mb-2 flex items-center gap-2"><i data-lucide="shield" class="w-5 h-5 text-amber-500"></i> Change Password</h3>
+                            <div class="space-y-3">
+                                <input type="password" id="oldPassword" placeholder="Current password" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="password" id="newPassword" placeholder="New password" class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button onclick="changePassword()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-medium shadow-md transition hover:scale-[1.02]">Update Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Container -->
+<div id="modalOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="modalContent" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0"></div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer" class="fixed bottom-6 right-6 z-[100] space-y-3"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
